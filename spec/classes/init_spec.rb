@@ -703,6 +703,27 @@ describe 'consul' do
             .with_content(%r{-http-addr=consul.example.com:9999})
         }
       end
+
+      context 'When systemd_notify is enabled' do
+        let(:params) do
+          {
+            systemd_notify: true,
+            init_style: 'systemd',
+          }
+        end
+        it { is_expected.to contain_file('/etc/systemd/system/consul.service').with_content(/Type=notify/) }
+      end
+
+      context 'When systemd_notify is disabled' do
+        let(:params) do
+          {
+            systemd_notify: false,
+            init_style: 'systemd',
+          }
+        end
+        it { is_expected.to contain_file('/etc/systemd/system/consul.service').with_content(/Type=exec/) }
+      end
+
       context 'When asked not to manage the init system' do
         let(:params) { { init_style: 'unmanaged' } }
 
