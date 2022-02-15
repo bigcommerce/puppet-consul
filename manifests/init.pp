@@ -171,6 +171,10 @@
 # [*log_file*]
 #   String, where should the log file be located
 #
+# [*systemd_notify*]
+#   Boolean. Set to true to have the SystemD service configured to support sd_notify (Type=notify)
+#   where Consul will notify SystemD when it's ready/has cluster membership.
+#
 # === Examples
 #
 #  @example
@@ -237,6 +241,7 @@ class consul (
   Optional[String[1]]                   $shell                       = $consul::params::shell,
   Boolean                               $enable_beta_ui              = false,
   Boolean                               $allow_binding_to_root_ports = false,
+  Boolean                               $systemd_notify              = false,
 ) inherits consul::params {
 
   $real_download_url = pick(
