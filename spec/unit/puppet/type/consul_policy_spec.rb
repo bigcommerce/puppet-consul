@@ -97,7 +97,7 @@ describe Puppet::Type.type(:consul_policy) do
     end.to raise_error(Puppet::Error, /Policy rule disposition must be a string/)
   end
 
-  context 'resource is acl or operator' do
+  context 'resource is acl, operator, keyring, mesh, or peering' do
     it 'should pass if rule segment is missing' do
       expect do
         Puppet::Type.type(:consul_policy).new(
@@ -118,6 +118,39 @@ describe Puppet::Type.type(:consul_policy) do
           :rules        => [
               {
                   'resource'    => 'operator',
+                  'disposition' => 'read'
+              }
+          ]
+        )
+        Puppet::Type.type(:consul_policy).new(
+          :name         => 'testing',
+          :id           => '39c75e12-7f43-0a40-dfba-9aa3fcda08d4',
+          :description  => 'test description',
+          :rules        => [
+              {
+                  'resource'    => 'keyring',
+                  'disposition' => 'read'
+              }
+          ]
+        )
+        Puppet::Type.type(:consul_policy).new(
+          :name         => 'testing',
+          :id           => '39c75e12-7f43-0a40-dfba-9aa3fcda08d4',
+          :description  => 'test description',
+          :rules        => [
+              {
+                  'resource'    => 'mesh',
+                  'disposition' => 'read'
+              }
+          ]
+        )
+        Puppet::Type.type(:consul_policy).new(
+          :name         => 'testing',
+          :id           => '39c75e12-7f43-0a40-dfba-9aa3fcda08d4',
+          :description  => 'test description',
+          :rules        => [
+              {
+                  'resource'    => 'peering',
                   'disposition' => 'read'
               }
           ]
@@ -143,7 +176,7 @@ describe Puppet::Type.type(:consul_policy) do
     end
   end
 
-  context 'resource is neither acl nor operator' do
+  context 'resource is not acl, operator, keyring, mesh, or peering' do
     it 'should fail if rule segment is missing' do
       expect do
         Puppet::Type.type(:consul_policy).new(
